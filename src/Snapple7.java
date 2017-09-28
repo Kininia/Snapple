@@ -13,40 +13,40 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("serial")
 public class Snapple7 extends Applet implements Runnable, KeyListener {
 
-	private int p = 0, hastighet = 10;// poäng för spelare && antal pixlar ormen flyttar sig/uppdatering
-	private int[][] coord = new int[250][2], intKo = new int[250][2];//intfält för koordinater för kroppen && infält som sparar koordinaterna
-	private int[] tangentKo = new int[15];//intfält som håller reda på intryckta tangenter
-	private int a = 0, b = 0;// omodifierade koordinater för ett "startäpple"
-	int vx = hastighet, vy = 0;// hastigheter för ormen
+	private int p = 0, hastighet = 10;// poang far spelare && antal pixlar ormen flyttar sig/uppdatering
+	private int[][] coord = new int[250][2], intKo = new int[250][2];//intfalt far koordinater far kroppen && infalt som sparar koordinaterna
+	private int[] tangentKo = new int[15];//intfalt som haller reda pa intryckta tangenter
+	private int a = 0, b = 0;// omodifierade koordinater far ett "startapple"
+	int vx = hastighet, vy = 0;// hastigheter far ormen
 	int kropp = 3/*antal kroppsdelar*/ , antalK = 0/*antal sparade kroppsdelar*/, antalT = 0/*antal sparade tangenter*/;
-	int fortsätt = 0/*se längre ner*/, vänta = 1/*se längre ner*/, placeringar = 0/*antal spelade omgångar*/;
+	int fortsatt = 0/*se langre ner*/, vanta = 1/*se langre ner*/, placeringar = 0/*antal spelade omgangar*/;
 
-	private Highscore[] highscore = new Highscore[100];//Highscore-fält innehållande en int och en string/position
-	private Font större = new Font("Arial", Font.BOLD, 15); // typsnitt för gameover text
+	private Highscore[] highscore = new Highscore[100];//Highscore-falt innehallande en int och en string/position
+	private Font storre = new Font("Arial", Font.BOLD, 15); // typsnitt far gameover text
 	private boolean north = false, south = false, west = false, east = true;// riktningar
-	boolean gameOver = false/*game over?*/, taken = true/*äpple taget?*/, newGame = false/*nytt spel?*/, pause = false/*paus?*/;
+	boolean gameOver = false/*game over?*/, taken = true/*apple taget?*/, newGame = false/*nytt spel?*/, pause = false/*paus?*/;
 	Image bufferImage;
 	Graphics bufferGraphics;
 
-	public void init() {//Initialiseringsmetod, anropas automatiskt i början
+	public void init() {//Initialiseringsmetod, anropas automatiskt i barjan
 		setSize(500, 400);//Appletens storlek
-		setBackground(Color.black);// Bakgrundsfärg
+		setBackground(Color.black);// Bakgrundsfarg
 
 		// Startkoordinater
 		for (int i = 0; i < kropp; i++) {
 			coord[i][0] = 100 + 10 * i;
 			coord[i][1] = 100;
 		}
-		addKeyListener(this);// Appleten lyssnar på tangenttryck
+		addKeyListener(this);// Appleten lyssnar pa tangenttryck
 
 		Thread th = new Thread(this);// en egen aktivitet till programmet
 		th.start();
 
-		setVisible(true); // istället för i main
+		setVisible(true); // istallet far i main
 
 		bufferImage = createImage(500, 400);// Skapar en buffert till grafiken i appleten
 		bufferGraphics = bufferImage.getGraphics();
-		bufferGraphics.setColor(Color.black);//Förgrundsfärg
+		bufferGraphics.setColor(Color.black);//Fargrundsfarg
 		bufferGraphics.fillRect(0, 0, 500, 400);
 	}
 
@@ -63,10 +63,10 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 			bufferGraphics.setColor(Color.red);
 			bufferGraphics.drawRect(40, 40, 410, 310);//Ritar ut kanten
 			bufferGraphics.setColor(Color.white);
-			bufferGraphics.setFont(större);
-			bufferGraphics.drawString(" " + p, 250, 20);//Skriver ut spelarens poäng
+			bufferGraphics.setFont(storre);
+			bufferGraphics.drawString(" " + p, 250, 20);//Skriver ut spelarens poang
 			
-			if (pause)//Om det är paus skrivs "Pause"
+			if (pause)//Om det ar paus skrivs "Pause"
 				bufferGraphics.drawString("Pause", 240, 100);
 
 			for (int i = 0; i < kropp; i++) {//Ritar ut ormen
@@ -74,14 +74,14 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 				bufferGraphics.fillOval(coord[i][0], coord[i][1], 10, 10);// Kroppsdel
 			}
 
-			if (coord[0][0] == a && coord[0][1] == b)// Om ormens huvud och äpplet hamnar på samma koordinater
+			if (coord[0][0] == a && coord[0][1] == b)// Om ormens huvud och applet hamnar pa samma koordinater
 			{
 				taken = true;
-				p++;//Poängen ökar med 1
-				kropp++;//Längden på kroppen ökar med 1
+				p++;//Poangen akar med 1
+				kropp++;//Langden pa kroppen akar med 1
 			}
 
-			if (taken)// Om äpplet är taget skapas ett nytt slumpvis
+			if (taken)// Om applet ar taget skapas ett nytt slumpvis
 			{
 				int x = (int) (Math.random() * 37);
 				int y = (int) (Math.random() * 27);
@@ -91,31 +91,31 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 			}
 
 			bufferGraphics.setColor(Color.green);
-			bufferGraphics.fillOval(a, b, 10, 10);//ritar ett grönt äpple
+			bufferGraphics.fillOval(a, b, 10, 10);//ritar ett grant apple
 			g.drawImage(bufferImage, 0, 0, this);
 		}
 
 		else//Om det blir game over
 		{
-			saveGame();//se längre ner
+			saveGame();//se langre ner
 			
 			bufferGraphics.setColor(Color.black);
-			bufferGraphics.fillRect(0, 0, 500, 400);//Ritar över ormen och äpplena
+			bufferGraphics.fillRect(0, 0, 500, 400);//Ritar aver ormen och applena
 			bufferGraphics.setColor(Color.red);
-			bufferGraphics.setFont(större);
+			bufferGraphics.setFont(storre);
 			bufferGraphics.drawString("Highscore:", 190, 110);//Skriver rubriken "Highscore"
 			
-			//Skriver ut highscorelistan (om det är mindre än 5 spelomgångar)
+			//Skriver ut highscorelistan (om det ar mindre an 5 spelomgangar)
 			if(placeringar<5)
 			{
 			for (int i=0; i<placeringar; i++)
-				bufferGraphics.drawString(""+highscore[i], 190, 135+(i*25));//Skriver ut poäng och namn
+				bufferGraphics.drawString(""+highscore[i], 190, 135+(i*25));//Skriver ut poang och namn
 			}
-			//Skriver ut highscorelistan, top 5 (om det är mer än 5 spelomgångar)
+			//Skriver ut highscorelistan, top 5 (om det ar mer an 5 spelomgangar)
 			else
 			{
 				for (int i=0; i<5; i++)
-					bufferGraphics.drawString(""+highscore[i], 190, 135+(i*25));//Skriver ut poäng och namn
+					bufferGraphics.drawString(""+highscore[i], 190, 135+(i*25));//Skriver ut poang och namn
 			}
 			
 			for(int x=3; x>0; x--){//Starta om spelet "timer"
@@ -126,7 +126,7 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 				g.drawImage(bufferImage, 0, 0, this);
 				try {Thread.sleep(1000);} catch (InterruptedException ie) {}
 			}
-			startNewGame();//se längre ner
+			startNewGame();//se langre ner
 		}
 	}
 
@@ -134,19 +134,19 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 
 		while(true)
 		{
-			if (!gameOver)//Så länge det inte är game over...
+			if (!gameOver)//Sa lange det inte ar game over...
 			{
 				
-				if (!pause && vänta == 1)//..och spelet inte är pausat...
+				if (!pause && vanta == 1)//..och spelet inte ar pausat...
 				{
 					for (int i = 0; i < kropp - 1; i++)
 					{
-						pushCoord(coord[i][0], coord[i][1]);//...läggs alla kroppsdelar utom sista i ett fält
+						pushCoord(coord[i][0], coord[i][1]);//...laggs alla kroppsdelar utom sista i ett falt
 					}
 					
-					if(antalT==1)//Sväng sker bara om en enda tangent är intryckt
+					if(antalT==1)//Svang sker bara om en enda tangent ar intryckt
 					{
-						switch(popTangent())//Tar emot första tangentvärdet
+						switch(popTangent())//Tar emot farsta tangentvardet
 						{
 						case 1://upp
 							north=true;
@@ -158,12 +158,12 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 					  		west=false;
 					  		east=false;
 					  		break;
-						case 3://vänster
+						case 3://vanster
 							west=true;
 							north=false;
 							south=false;
 							break;
-						case 4://höger
+						case 4://hager
 							east=true;
 					  		north=false;
 					  		south=false;
@@ -177,29 +177,29 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 					coord[0][0] += vx;
 					coord[0][1] += vy;
 					
-					//...och resterande kroppsdelar får koordinaterna som kroppsdelen framför hade
+					//...och resterande kroppsdelar far koordinaterna som kroppsdelen framfar hade
 					for (int i = 1; i < kropp; i++)
 					{
 						coord[i][0] = (popX());
 						coord[i][1] = (popY());
 						
-						//Om huvudet och en kroppsdel är på samma koordinater blir det game over - man har krockat med sig själv
-						if (coord[0][0] == coord[i][0] && fortsätt == 2)
+						//Om huvudet och en kroppsdel ar pa samma koordinater blir det game over - man har krockat med sig sjalv
+						if (coord[0][0] == coord[i][0] && fortsatt == 2)
 							if (coord[0][1] == coord[i][1] && !pause)
 								gameOver = true;
 					}
 				}
 				
-				if(antalT>1)//Om fler än en tangent trycktes in nollställs tangenterna
+				if(antalT>1)//Om fler an en tangent trycktes in nollstalls tangenterna
 					antalT=0;
 				
-				//"Tömmer" förlyttningskön efter att man pausat spelet
-				if (vänta < 1)
-					vänta++;
+				//"Tammer" farlyttningskan efter att man pausat spelet
+				if (vanta < 1)
+					vanta++;
 				
-				//Fortsätt ser till att det inte blir game over direkt i början av spelet
-				if (fortsätt < 2)
-					fortsätt++;
+				//Fortsatt ser till att det inte blir game over direkt i barjan av spelet
+				if (fortsatt < 2)
+					fortsatt++;
 
 				if (north)//upp
 				{
@@ -213,13 +213,13 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 					vy = hastighet;
 				}
 
-				if (west)//vänster
+				if (west)//vanster
 				{
 					vx = -hastighet;
 					vy = 0;
 				}
 
-				if (east)//höger
+				if (east)//hager
 				{
 					vx = hastighet;
 					vy = 0;
@@ -246,58 +246,58 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 		if(ke.getKeyCode()==KeyEvent.VK_S && !north && !pause)//ner
 			pushTangent(2);
 		  
-		if(ke.getKeyCode()==KeyEvent.VK_A && !east && !pause)//vänster
+		if(ke.getKeyCode()==KeyEvent.VK_A && !east && !pause)//vanster
 			pushTangent(3);
 		
-		if(ke.getKeyCode()==KeyEvent.VK_D && !west && !pause)//höger
+		if(ke.getKeyCode()==KeyEvent.VK_D && !west && !pause)//hager
 			pushTangent(4);
 		
 		if(ke.getKeyCode()==KeyEvent.VK_SPACE && !pause)//paus
 		{
 			pause=true;
-			fortsätt=0;
-			vänta=0;
+			fortsatt=0;
+			vanta=0;
 		}
 		
-		if(ke.getKeyCode()==KeyEvent.VK_ENTER && pause)//Spelet fortsätter efter paus
+		if(ke.getKeyCode()==KeyEvent.VK_ENTER && pause)//Spelet fortsatter efter paus
 			pause=false;
 	}
 
-	public void pushCoord(int i, int x){//Kömetod som tar emot koordinater för samtliga kroppsdelar
+	public void pushCoord(int i, int x){//Kametod som tar emot koordinater far samtliga kroppsdelar
 		intKo[antalK][0] = i;
 		intKo[antalK][1] = x;
 		antalK++;
 	}
 	
-	public int popX(){//Kömetod som returnerar X-koordinaten för samtliga kroppsdelar
-		int förstaX = intKo[0][0];
+	public int popX(){//Kametod som returnerar X-koordinaten far samtliga kroppsdelar
+		int farstaX = intKo[0][0];
 		for (int i = 0; i < antalK - 1; i++)
 			intKo[i][0] = intKo[i + 1][0];
 		antalK--;
-		return förstaX;
+		return farstaX;
 	}
 
-	public int popY(){//Kömetod som returnerar Y-koordinaten för samtliga kroppsdelar
-		int förstaY = intKo[0][1];
+	public int popY(){//Kametod som returnerar Y-koordinaten far samtliga kroppsdelar
+		int farstaY = intKo[0][1];
 		for (int i = 0; i < antalK; i++)
 			intKo[i][1] = intKo[i + 1][1];
-		return förstaY;
+		return farstaY;
 	}
 	
-	public void pushTangent(int t){//Kömetod som tar emot tangenttryckningar
+	public void pushTangent(int t){//Kametod som tar emot tangenttryckningar
 		tangentKo[antalT] = t;
 		antalT++;
 	}
 	
-	public int popTangent(){//Kömetod som returnerar första tangenten i kön
-		int förstaT = tangentKo[0];
+	public int popTangent(){//Kametod som returnerar farsta tangenten i kan
+		int farstaT = tangentKo[0];
 		for (int i = 0; i < antalT - 1; i++)
 			tangentKo[i] = tangentKo[i+1];
 		antalT--;
-		return förstaT;
+		return farstaT;
 	}
 
-	// Metod som sparar highscore för en spelomgång
+	// Metod som sparar highscore far en spelomgang
 	public void saveGame() {
 		String name = JOptionPane.showInputDialog(null, "Sorry, Game Over!\nWrite your name:", "Highscore", JOptionPane.PLAIN_MESSAGE);
 		
@@ -306,14 +306,14 @@ public class Snapple7 extends Applet implements Runnable, KeyListener {
 		Sort(highscore, placeringar);//Sorterar
 	}
 
-	// metod som återställer samtliga värden så att man kan starta en ny omgång
+	// metod som aterstaller samtliga varden sa att man kan starta en ny omgang
 	public void startNewGame() {
 		p = 0;
 		kropp = 3;
 		antalK = 0;
 		antalT = 0;
-		fortsätt = 0;
-		vänta = 1;
+		fortsatt = 0;
+		vanta = 1;
 		vx = hastighet;
 		vy = 0;
 		east = true;
