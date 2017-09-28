@@ -41,6 +41,8 @@ target/
 .settings/
 .classpath
 .project
+*.html
+java.policy.applet
 
 # NetBeans specific
 nbproject/private/
